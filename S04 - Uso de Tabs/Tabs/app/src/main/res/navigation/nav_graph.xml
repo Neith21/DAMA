@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/quienSoyFragment">
+    <fragment
+        android:id="@+id/quienSoyFragment"
+        android:name="com.cchavez.tabs.QuienSoyFragment"
+        android:label="fragment_quien_soy"
+        tools:layout="@layout/fragment_quien_soy" />
+    <fragment
+        android:id="@+id/queEstudioFragment"
+        android:name="com.cchavez.tabs.QueEstudioFragment"
+        android:label="fragment_que_estudio"
+        tools:layout="@layout/fragment_que_estudio" />
+    <fragment
+        android:id="@+id/tecnologiasFragment"
+        android:name="com.cchavez.tabs.TecnologiasFragment"
+        android:label="fragment_tecnologias"
+        tools:layout="@layout/fragment_tecnologias" />
+</navigation>
