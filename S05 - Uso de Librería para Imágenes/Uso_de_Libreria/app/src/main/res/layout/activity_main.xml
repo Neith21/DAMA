@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/txtTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="USO DE PICASSO EN ANDROID"
+        android:textColor="#B71C1C"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <!-- ImageView -->
+    <ImageView
+        android:id="@+id/img01"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="#66FF66"
+        app:layout_constraintTop_toBottomOf="@id/txtTitulo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <!-- Botón 1 -->
+    <Button
+        android:id="@+id/btnUno"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="IMAGEN 1"
+        android:textColor="#FFFFFF"
+        android:background="#6200EE"
+        app:layout_constraintTop_toBottomOf="@id/img01"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <!-- Botón 2 -->
+    <Button
+        android:id="@+id/btnDos"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="IMAGEN 2"
+        android:textColor="#FFFFFF"
+        android:background="#6200EE"
+        app:layout_constraintTop_toBottomOf="@id/btnUno"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"/>
+
+    <!-- Botón 3 -->
+    <Button
+        android:id="@+id/btnTres"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="IMAGEN 3"
+        android:textColor="#FFFFFF"
+        android:background="#6200EE"
+        app:layout_constraintTop_toBottomOf="@id/btnDos"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"/>
+
+    <!-- Botón 4 -->
+    <Button
+        android:id="@+id/btnCuatro"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="IMAGEN_EXTERNA"
+        android:textColor="#FFFFFF"
+        android:background="#6200EE"
+        app:layout_constraintTop_toBottomOf="@id/btnTres"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
