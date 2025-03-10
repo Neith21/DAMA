@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#FFF7FC">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="USO DE SONIDOS"
+        android:textColor="#FF0000"
+        android:textStyle="bold"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reproductor de audio en Android"
+        android:textColor="#0000FF"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/imgBoton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/reproducir"
+            android:layout_margin="10dp"
+            android:scaleType="centerInside" />
+
+        <ImageButton
+            android:id="@+id/imgBotonStop"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/pausar"
+            android:layout_margin="10dp"
+            android:scaleType="centerInside" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnRemoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AUDIO REMOTO"
+        android:textColor="#FFFFFF"
+        android:background="#800080"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:id="@+id/btnLocal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AUDIO LOCAL"
+        android:textColor="#FFFFFF"
+        android:background="#800080"
+        android:layout_marginTop="10dp" />
+</LinearLayout>
