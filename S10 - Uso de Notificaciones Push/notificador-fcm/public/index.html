@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificador Web</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .tab.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-container {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .form-row:last-child {
+            border-bottom: none;
+        }
+
+        .form-label {
+            width: 100px;
+            padding: 15px;
+            background-color: #eee;
+            font-weight: bold;
+        }
+
+        .form-field {
+            flex: 1;
+            padding: 10px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 5px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background-color: transparent;
+        }
+
+        select {
+            border: 1px solid #ddd;
+            background-color: white;
+            height: 35px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn-send {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-send:hover {
+            background-color: #45a049;
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+            display: block;
+        }
+
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Notificador Web</h1>
+
+    <div class="tabs">
+        <div class="tab active" data-tab="individual">Notificación Individual</div>
+        <div class="tab" data-tab="grupo">Notificación a Grupo</div>
+    </div>
+
+    <div class="tab-content active" id="individual-tab">
+        <div class="form-container">
+            <div class="form-row">
+                <div class="form-label">Asunto:</div>
+                <div class="form-field">
+                    <input type="text" id="asunto" placeholder="Escribe el asunto de la notificación">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-label">Mensaje:</div>
+                <div class="form-field">
+                    <textarea id="mensaje" placeholder="Escribe el mensaje que quieres enviar"></textarea>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-label">Token:</div>
+                <div class="form-field">
+                    <input type="text" id="token" placeholder="Ingresa el token del dispositivo">
+                </div>
+            </div>
+        </div>
+
+        <button class="btn-send" id="enviarBtn">Enviar Notificación Individual</button>
+    </div>
+
+    <div class="tab-content" id="grupo-tab">
+        <div class="form-container">
+            <div class="form-row">
+                <div class="form-label">Asunto:</div>
+                <div class="form-field">
+                    <input type="text" id="asuntoGrupo" placeholder="Escribe el asunto de la notificación">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-label">Mensaje:</div>
+                <div class="form-field">
+                    <textarea id="mensajeGrupo" placeholder="Escribe el mensaje que quieres enviar"></textarea>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-label">Grupo:</div>
+                <div class="form-field">
+                    <select id="grupoSelect">
+                        <option value="">Selecciona un grupo</option>
+                        <!-- Se llenarán dinámicamente -->
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn-send" id="enviarGrupoBtn">Enviar Notificación a Grupo</button>
+    </div>
+
+    <div class="status" id="status"></div>
+
+    <script>
+        // Cambiar entre pestañas
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
+            });
+        });
+
+        // Cargar grupos al iniciar
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/api/grupos');
+                const data = await response.json();
+                
+                const selectGrupo = document.getElementById('grupoSelect');
+                data.grupos.forEach(grupo => {
+                    const option = document.createElement('option');
+                    option.value = grupo.id;
+                    option.textContent = grupo.nombre;
+                    selectGrupo.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error al cargar grupos:', error);
+            }
+        });
+
+        // Función para enviar notificación individual
+        async function enviarNotificacion() {
+            const asunto = document.getElementById('asunto').value;
+            const mensaje = document.getElementById('mensaje').value;
+            const token = document.getElementById('token').value;
+            const statusDiv = document.getElementById('status');
+
+            if (!asunto || !mensaje || !token) {
+                statusDiv.textContent = 'Por favor, completa todos los campos';
+                statusDiv.className = 'status error';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/enviar-notificacion', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        token: token,
+                        titulo: asunto,
+                        mensaje: mensaje
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    statusDiv.textContent = '¡Notificación enviada con éxito!';
+                    statusDiv.className = 'status success';
+                    document.getElementById('asunto').value = '';
+                    document.getElementById('mensaje').value = '';
+                } else {
+                    throw new Error(data.error || 'Error al enviar la notificación');
+                }
+            } catch (error) {
+                statusDiv.textContent = 'Error al enviar la notificación: ' + error.message;
+                statusDiv.className = 'status error';
+                console.error('Error:', error);
+            }
+        }
+
+        // Función para enviar notificación a grupo
+        async function enviarNotificacionGrupo() {
+            const asunto = document.getElementById('asuntoGrupo').value;
+            const mensaje = document.getElementById('mensajeGrupo').value;
+            const grupo = document.getElementById('grupoSelect').value;
+            const statusDiv = document.getElementById('status');
+
+            if (!asunto || !mensaje || !grupo) {
+                statusDiv.textContent = 'Por favor, completa todos los campos';
+                statusDiv.className = 'status error';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/enviar-a-grupo', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        grupo: grupo,
+                        titulo: asunto,
+                        mensaje: mensaje
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    statusDiv.textContent = '¡Notificación enviada al grupo con éxito!';
+                    statusDiv.className = 'status success';
+                    document.getElementById('asuntoGrupo').value = '';
+                    document.getElementById('mensajeGrupo').value = '';
+                } else {
+                    throw new Error(data.error || 'Error al enviar la notificación al grupo');
+                }
+            } catch (error) {
+                statusDiv.textContent = 'Error al enviar la notificación: ' + error.message;
+                statusDiv.className = 'status error';
+                console.error('Error:', error);
+            }
+        }
+
+        // Agregar event listeners a los botones
+        document.getElementById('enviarBtn').addEventListener('click', enviarNotificacion);
+        document.getElementById('enviarGrupoBtn').addEventListener('click', enviarNotificacionGrupo);
+    </script>
+</body>
+
+</html>
